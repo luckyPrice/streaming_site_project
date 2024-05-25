@@ -8,8 +8,10 @@ import { UploadVideoComponent } from './upload-video/upload-video.component';
 import {NgxFileDropModule} from "ngx-file-drop";
 import {FormsModule} from "@angular/forms";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatButtonModule} from "@angular/material/button";
 import { HeaderComponent } from './header/header.component';
+import {MatToolbar, MatToolbarModule} from "@angular/material/toolbar";
+import {MatIcon, MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { HeaderComponent } from './header/header.component';
     HttpClientModule,
     //HttpClient,
     NgxFileDropModule,
-    MatButton
+    MatButtonModule,
+    MatToolbarModule,
+    MatIconModule,
   ],
   providers: [
     provideClientHydration(),
