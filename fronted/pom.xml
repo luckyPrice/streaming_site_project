@@ -31,7 +31,7 @@
                 <configuration>
                     <nodeVersion>v20.13.1</nodeVersion>
                     <nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
-                    <workingDirectory>youtube-clone-ui</workingDirectory>
+                    <workingDirectory>youtube-ui</workingDirectory>
                 </configuration>
                 <executions>
                     <execution>

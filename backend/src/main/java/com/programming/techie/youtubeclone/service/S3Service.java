@@ -40,7 +40,7 @@ public class S3Service implements FileService{
         var filenameExtension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
         //랜덤
-        var key = UUID.randomUUID().toString() + filenameExtension;
+        var key = UUID.randomUUID().toString() + "." +filenameExtension;
 
         //메타데이터
         var metadata = new ObjectMetadata();
