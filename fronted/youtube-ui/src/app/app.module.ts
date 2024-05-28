@@ -7,7 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { UploadVideoComponent } from './upload-video/upload-video.component';
 import {NgxFileDropModule} from "ngx-file-drop";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClient, HttpClientModule, provideHttpClient, withFetch } from "@angular/common/http";
 import {MatButton, MatButtonModule} from "@angular/material/button";
 import { HeaderComponent } from './header/header.component';
 import {MatToolbar, MatToolbarModule} from "@angular/material/toolbar";
@@ -22,18 +22,21 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatChipGrid} from "@angular/material/chips";
 import {MatChipsModule} from "@angular/material/chips";
-import {VgCoreModule} from "@videogular/ngx-videogular/core";
+import {VgApiService, VgCoreModule} from "@videogular/ngx-videogular/core";
 import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { VideoPlayerComponent } from './video-player/video-player.component'
+
 
 @NgModule({
   declarations: [
     AppComponent,
     UploadVideoComponent,
     HeaderComponent,
-    SaveVideoDetailsComponent
+    SaveVideoDetailsComponent,
+    VideoPlayerComponent
   ],
   imports: [
     BrowserModule,
@@ -61,11 +64,13 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+
   ],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]
 })
