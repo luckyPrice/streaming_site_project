@@ -20,21 +20,6 @@
           <mat-option value="PRIVATE">PRIVATE</mat-option>
         </mat-select>
       </mat-form-field>
-<!--      <mat-form-field class="example-chip-list">-->
-<!--        <mat-label>Tags</mat-label>-->
-<!--        <mat-chip-list #chipList aria-label="Fruit selection">-->
-<!--          <mat-chip *ngFor="let tag of tags" [selectable]="selectable"-->
-<!--                    [removable]="removable" (removed)="remove(tag)">-->
-<!--            {{tag}}-->
-<!--            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>-->
-<!--          </mat-chip>-->
-<!--          <input placeholder="Add Tag"-->
-<!--                 [matChipInputFor]="chipList"-->
-<!--                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"-->
-<!--                 [matChipInputAddOnBlur]="addOnBlur"-->
-<!--                 (matChipInputTokenEnd)="add($event)">-->
-<!--        </mat-chip-list>-->
-<!--      </mat-form-field>-->
       <mat-form-field class="example-chip-list">
         <mat-label>Tags</mat-label>
         <mat-chip-grid #chipGrid aria-label="Enter fruits">
@@ -55,6 +40,24 @@
                  (matChipInputTokenEnd)="add($event)"/>
         </mat-chip-grid>
       </mat-form-field>
+      <div>
+        <label for="inputGroupFile01">Upload Tumbnail:
+          <div>
+            <input type="file" class="custom-file-input" id="inputGroupFile01"
+            aria-describedby="inputGroupFileAddon01" (change)="onFileSelected($event)">
+          </div>
+          <br/>
+          <div *ngIf="fileSelected">
+            <div>
+              <p>Selected File: {{selectedFileName}}</p>
+            </div>
+            <div>
+              <button mat-raised-button color="primary" type="submit" (click)="onUpload()">Upload</button>
+            </div>
+          </div>
+          <br>
+        </label>
+      </div>
       <div>
         <button type="submit" mat-raised-button color="primary">Save</button>
       </div>
