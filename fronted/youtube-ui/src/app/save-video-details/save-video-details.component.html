@@ -65,7 +65,7 @@
   </div>
 
   <div fxFlex="30%">
-    <app-video-player [videoUrl]="videoUrl"></app-video-player>
+    <app-video-player *ngIf="videoUrl" [videoUrl]=videoUrl></app-video-player>
   </div>
 
   <div fxFlex = "20%">Hi</div>

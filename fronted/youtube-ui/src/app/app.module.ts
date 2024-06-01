@@ -7,7 +7,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { UploadVideoComponent } from './upload-video/upload-video.component';
 import {NgxFileDropModule} from "ngx-file-drop";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClient, HttpClientModule, provideHttpClient, withFetch } from "@angular/common/http";
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule,
+  provideHttpClient,
+  withFetch,
+  withInterceptors, withInterceptorsFromDi
+} from "@angular/common/http";
 import {MatButton, MatButtonModule} from "@angular/material/button";
 import { HeaderComponent } from './header/header.component';
 import {MatToolbar, MatToolbarModule} from "@angular/material/toolbar";
@@ -27,23 +34,29 @@ import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { VideoPlayerComponent } from './video-player/video-player.component'
+import { VideoPlayerComponent } from './video-player/video-player.component';
+import { AuthConfigModule } from './auth/auth-config.module'
+import {TokenInterceptorService} from "./interceptors/token-interceptor.service";
+import {AuthInterceptor} from "angular-auth-oidc-client";
+import { VideoDetailComponent } from './video-detail/video-detail.component';
+
 
 
 @NgModule({
+
   declarations: [
     AppComponent,
     UploadVideoComponent,
     HeaderComponent,
     SaveVideoDetailsComponent,
-    VideoPlayerComponent
+    VideoPlayerComponent,
+    VideoDetailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule,
-    //HttpClient,
+
     NgxFileDropModule,
     MatButtonModule,
     MatToolbarModule,
@@ -65,13 +78,15 @@ import { VideoPlayerComponent } from './video-player/video-player.component'
     VgOverlayPlayModule,
     VgBufferingModule,
     MatSnackBarModule,
+    AuthConfigModule,
 
   ],
   providers: [
-    provideClientHydration(),
+    //provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch())
+    //provideHttpClient(withInterceptorsFromDi()),
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

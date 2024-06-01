@@ -33,8 +33,7 @@ export class SaveVideoDetailsComponent implements OnInit{
 
   constructor(private activatedRoute: ActivatedRoute, private videoService: VideoService,
               private matSnackBar: MatSnackBar) {
-    // @ts-ignore
-    this.videoId = this.activatedRoute.snapshot.params.videoId;
+    this.videoId = this.activatedRoute.snapshot.params['videoId'];
     this.videoService.getVideo(this.videoId).subscribe(data => {
       this.videoUrl = data.videoUrl
       this.thumbnailUrl = data.thumbnailUrl;

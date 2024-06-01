@@ -69,6 +69,7 @@ export class UploadVideoComponent {
 
       this.fileEntry.file(file => {
         this.videoService.uploadVideo(file).subscribe(data=>{
+          console.log(data.videoId)
           this.router.navigateByUrl("/save-video-details/" + data.videoId);
 
 

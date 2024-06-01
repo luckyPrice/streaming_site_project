@@ -1,6 +1,6 @@
 export interface VideoDto{
   id: string;
-  title: String;
+  title: string;
   description: string;
   tags: Array<string>;
   videoUrl: string;
