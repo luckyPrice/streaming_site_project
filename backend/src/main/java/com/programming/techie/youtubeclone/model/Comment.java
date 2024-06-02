@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class comment {
+public class Comment {
 
     @Id
     private String id;
