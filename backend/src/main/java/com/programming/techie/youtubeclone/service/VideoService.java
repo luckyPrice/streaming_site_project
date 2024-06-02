@@ -14,6 +14,7 @@ public class VideoService {
 
     private final S3Service s3Service;
     private final VideoRepository videoRepository;
+    private final UserService userService;
 
 
     public UploadVideoResponse uploadVideo(MultipartFile multipartFile) {
@@ -34,7 +35,7 @@ public class VideoService {
         savedVideo.setTitle(videoDto.getTitle());
         savedVideo.setDescription(videoDto.getDescription());
         savedVideo.setTags(videoDto.getTags());
-        savedVideo.setThumbnailUrl(videoDto.getThumnailUrl());
+        savedVideo.setThumbnailUrl(videoDto.getThumbnailUrl());
         savedVideo.setVideostatus(videoDto.getVideoStatus());
 
         videoRepository.save(savedVideo);
@@ -58,14 +59,97 @@ public class VideoService {
     public VideoDto getVideoDetails(String videoId) {
         Video savedVideo = getVideoById(videoId);
 
-        VideoDto videoDto = new VideoDto();
-        videoDto.setVideoUrl(savedVideo.getVideoUrl());
-        videoDto.setThumnailUrl(savedVideo.getThumbnailUrl());
-        videoDto.setId(savedVideo.getId());
-        videoDto.setTitle(savedVideo.getTitle());
-        videoDto.setDescription(savedVideo.getDescription());
-        videoDto.setVideoStatus(savedVideo.getVideostatus());
+        increaseVideoCount(savedVideo);
+        userService.addVideoToHistory(videoId);
 
+       return mapToVideoDto(savedVideo);
+    }
+
+    private void increaseVideoCount(Video savedVideo) {
+        savedVideo.increamentViewCount();
+        videoRepository.save(savedVideo);
+    }
+
+    public VideoDto likeVideo(String videoId) {
+        //get video by id
+        Video videoById = getVideoById(videoId);
+
+        //increment like count
+
+        //like -0 dislike -0
+        //like -1 dislike -0
+        //lije -0 dislike -0
+
+        //like -0 dislike -1
+        //like -1 dislike -0
+
+        //if usetr already liked the video then decrement like count
+
+        if(userService.ifLikedVideo(videoId)){
+            videoById.decreaseLikes();
+            userService.removeFromLikedVideos(videoId);
+        }else if (userService.ifDisLikedVideo(videoId)){
+            videoById.decreaseDisLikes();
+            userService.removeFromDisLikedVideos(videoId);
+            videoById.incrementLikes();
+            userService.addToLikedVideos(videoId);
+        }else {
+            videoById.incrementLikes();
+            userService.addToLikedVideos(videoId);
+        }
+
+        videoRepository.save(videoById);
+
+        return mapToVideoDto(videoById);
+
+    }
+
+    public VideoDto disLikeVideo(String videoId) {
+        //get video by id
+        Video videoById = getVideoById(videoId);
+
+        //increment like count
+
+        //like -0 dislike -0
+        //like -1 dislike -0
+        //lije -0 dislike -0
+
+        //like -0 dislike -1
+        //like -1 dislike -0
+
+        //if usetr already liked the video then decrement like count
+
+        if(userService.ifDisLikedVideo(videoId)){
+            videoById.decreaseDisLikes();
+            userService.removeFromDisLikedVideos(videoId);
+        }else if (userService.ifLikedVideo(videoId)){
+            videoById.decreaseLikes();
+            userService.removeFromLikedVideos(videoId);
+            videoById.incrementDisLikes();
+            userService.addToDisLikedVideos(videoId);
+        }else {
+            videoById.incrementDisLikes();
+            userService.addToDisLikedVideos(videoId);
+        }
+
+        videoRepository.save(videoById);
+
+        return mapToVideoDto(videoById);
+
+    }
+
+    private static VideoDto mapToVideoDto(Video videoById) {
+        VideoDto videoDto = new VideoDto();
+        videoDto.setVideoUrl(videoById.getVideoUrl());
+        videoDto.setThumbnailUrl(videoById.getThumbnailUrl());
+        videoDto.setId(videoById.getId());
+        videoDto.setTitle(videoById.getTitle());
+        videoDto.setDescription(videoById.getDescription());
+        videoDto.setVideoStatus(videoById.getVideostatus());
+        videoDto.setTags(videoById.getTags());
+        videoDto.setLikeCount(videoById.getLikes().get());
+        videoDto.setDislikeCount(videoById.getDisLikes().get());
+        videoDto.setViewCount(videoById.getViewCount().get());
         return videoDto;
     }
 }
